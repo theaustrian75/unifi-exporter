@@ -1,0 +1,101 @@
+{
+  "description": "UniFi device metrics (unpoller-compatible names) from classic /stat/device.",
+  "editable": true,
+  "graphTooltip": 1,
+  "id": null,
+  "panels": [
+    {
+      "title": "CPU utilization",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 }, "overrides": [] },
+      "targets": [{ "expr": "unifi_device_cpu_utilization_ratio{job=~\"$job\",instance=~\"$instance\"}", "legendFormat": "{{name}}", "refId": "A" }],
+      "id": 1
+    },
+    {
+      "title": "Memory utilization",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 }, "overrides": [] },
+      "targets": [{ "expr": "unifi_device_memory_utilization_ratio{job=~\"$job\",instance=~\"$instance\"}", "legendFormat": "{{name}}", "refId": "A" }],
+      "id": 2
+    },
+    {
+      "title": "WAN receive bytes",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "Bps" }, "overrides": [] },
+      "targets": [{ "expr": "rate(unifi_device_wan_receive_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m])", "legendFormat": "{{name}} rx", "refId": "A" }],
+      "id": 3
+    },
+    {
+      "title": "WAN transmit bytes",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "Bps" }, "overrides": [] },
+      "targets": [{ "expr": "rate(unifi_device_wan_transmit_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m])", "legendFormat": "{{name}} tx", "refId": "A" }],
+      "id": 4
+    },
+    {
+      "title": "Uptime",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "targets": [{ "expr": "unifi_device_uptime_seconds{job=~\"$job\",instance=~\"$instance\"}", "legendFormat": "{{name}}", "refId": "A" }],
+      "id": 5
+    },
+    {
+      "title": "Load average 1m",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{ "expr": "unifi_device_load_average_1{job=~\"$job\",instance=~\"$instance\"}", "legendFormat": "{{name}}", "refId": "A" }],
+      "id": 6
+    },
+    {
+      "title": "Device up",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "targets": [{ "expr": "unifi_device_up{job=~\"$job\",instance=~\"$instance\"}", "legendFormat": "{{name}}", "refId": "A" }],
+      "id": 7
+    },
+    {
+      "title": "Port receive bytes",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "Bps" }, "overrides": [] },
+      "targets": [{ "expr": "rate(unifi_device_port_receive_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m])", "legendFormat": "{{name}} {{port_name}}", "refId": "A" }],
+      "id": 8
+    },
+    {
+      "title": "Radio channel utilization",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 32 },
+      "datasource": { "type": "prometheus", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 }, "overrides": [] },
+      "targets": [{ "expr": "unifi_device_radio_channel_utilization_total_ratio{job=~\"$job\",instance=~\"$instance\"}", "legendFormat": "{{name}} {{radio_name}}", "refId": "A" }],
+      "id": 9
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["unifi", "unifi-exporter", "unpoller"],
+  "templating": {
+    "list": [
+      { "name": "datasource", "type": "datasource", "query": "prometheus" },
+      { "name": "job", "type": "query", "datasource": { "type": "prometheus", "uid": "${datasource}" }, "query": "label_values(unifi_exporter_up, job)", "includeAll": true, "multi": true, "current": { "text": "All", "value": "$__all" }, "refresh": 2 },
+      { "name": "instance", "type": "query", "datasource": { "type": "prometheus", "uid": "${datasource}" }, "query": "label_values(unifi_exporter_up{job=~\"$job\"}, instance)", "includeAll": true, "multi": true, "current": { "text": "All", "value": "$__all" }, "refresh": 2 }
+    ]
+  },
+  "time": { "from": "now-6h", "to": "now" },
+  "timezone": "browser",
+  "title": "UniFi Exporter / Devices",
+  "uid": "unifi-exporter-devices",
+  "version": 2
+}

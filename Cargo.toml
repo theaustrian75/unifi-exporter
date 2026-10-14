@@ -1,0 +1,33 @@
+[package]
+name = "unifi-exporter"
+version = "0.1.0"
+edition = "2021"
+description = "Read-only Prometheus exporter for UniFi (official Integration API + classic controller API)"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/klaus/unifi-exporter"
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio", "json"] }
+clap = { version = "4", features = ["derive", "env"] }
+futures = "0.3"
+prometheus = "0.14"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "cookies"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal", "time", "sync"] }
+toml = "0.8"
+tower-http = { version = "0.6", features = ["trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+wiremock = "0.6"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

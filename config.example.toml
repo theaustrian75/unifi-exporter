@@ -1,0 +1,26 @@
+# Connection mode: "local" or "cloud"
+mode = "local"
+
+# Local console origin (required for local mode and for classic API)
+base_url = "https://192.168.1.1"
+
+# Integration API key (X-API-KEY). Prefer a view-only admin.
+api_key = "replace-me"
+
+# Classic controller API (local UniFi OS user). View-only recommended.
+# Required for client RF/traffic, WAN counters, and rich device stats.
+username = "viewer"
+password = "replace-me"
+site = "default"
+
+# Required for cloud mode (Site Manager connector)
+# console_id = "YOUR_CONSOLE_ID"
+
+listen = "0.0.0.0:9130"
+poll_interval_secs = 60
+
+# Default true for local (self-signed UDM certs), false for cloud
+tls_insecure = true
+
+http_timeout_secs = 30
+max_concurrency = 8
